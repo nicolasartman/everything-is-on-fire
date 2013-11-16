@@ -1,7 +1,9 @@
 {
   "name": "everythingisonfire",
   "version": "0.0.0",
-  "dependencies": {},
+  "dependencies": {
+    "grunt-cli": "~0.1.11"
+  },
   "devDependencies": {
     "grunt": "~0.4.1",
     "grunt-autoprefixer": "~0.4.0",
@@ -43,6 +45,8 @@
     "node": ">=0.8.0"
   },
   "scripts": {
-    "test": "grunt test"
+    "test": "grunt test",
+    "app": "./node_modules/grunt-cli/bin/grunt server",
+    "build": "./node_modules/grunt-cli/bin/grunt build"
   }
 }
