@@ -55,7 +55,21 @@ angular.module('everythingIsOnFireApp')
                            "boson converter",
                            "battle wave reader",
                            "pilot waste disposal"];
-
+      var checkActions = function(robotActions, robot) {
+             var hits = 0;
+             if(robotActions != null) {
+                        var actionKeys = Object.keys(robotActions);
+                        var index;
+                        for(index = 0; index < actionKeys.length; index++) {
+                            var action = robotActions[actionKeys[index]];
+                            if(game.time() > action.timeout) {
+                                game.removeRobotAction(actionKeys[index], robot);
+                                hits++;
+                            }
+                        }
+                    }
+            return hits;
+        }
 	// Set scope to refresh every 50ms as a pseudo-runloop
         var taskInterval = 100;
  	var runLoop = function () {
@@ -63,30 +77,10 @@ angular.module('everythingIsOnFireApp')
                     game.incrementTime();
 
                     var robotOneActions = game.robotOneActions();
-                    if(robotOneActions != null) {
-                        var actionKeys = Object.keys(robotOneActions);
-                        var index;
-                        for(index = 0; index < actionKeys.length; index++) {
-                            var action = robotOneActions[actionKeys[index]];
-                            if(game.time() > action.timeout) {
-                                game.removeRobotOneAction(actionKeys[index]);
-                                game.hitRobotOne(1);
-                            }
-                        }
-                    }
+                    game.hitRobotOne(checkActions(robotOneActions, 1));
 
                     var robotTwoActions = game.robotTwoActions();
-                    if(robotTwoActions != null) {
-                        var actionKeys = Object.keys(robotTwoActions);
-                        var index;
-                        for(index = 0; index < actionKeys.length; index++) {
-                            var action = robotTwoActions[actionKeys[index]];
-                            if(game.time() > action.timeout) {
-                                game.removeRobotTwoAction(actionKeys[index]);
-                                game.hitRobotTwo(1);
-                            }
-                        }
-                    }
+                    game.hitRobotTwo(checkActions(robotTwoActions, 2));
 
                     if(game.time() % taskInterval == 0) {
                          var action, component;

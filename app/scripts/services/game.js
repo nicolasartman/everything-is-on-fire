@@ -114,6 +114,15 @@ angular.module('everythingIsOnFireApp').factory('game', function () {
             });
 	};
 
+        self.removeRobotAction = function(action, robot) {
+            if(robot == 1) {
+                robotOneActionQueue.child(action).remove();
+            }
+            else {
+                robotTwoActionQueue.child(action).remove();
+            }
+
+        }
 	robotTwoActionQueue.on('child_removed', function(snapshot) {
             console.log('task removed for robot 2');
             console.log(snapshot.val());
@@ -122,7 +131,7 @@ angular.module('everythingIsOnFireApp').factory('game', function () {
 	robotTwoActionQueue.on('child_added', function(snapshot) {
             console.log('New task for robot 2');
             console.log(snapshot.val());
-            gameData["robotTwoTasks"].push(snapshot.val());
+            gameData["robotTwoTasks"][snapshot.name()] = snapshot.val();
         });
         self.addRobotTwoAction = function(action) {
             robotTwoActionQueue.push(action);
