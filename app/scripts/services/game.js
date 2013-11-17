@@ -44,6 +44,19 @@ angular.module('everythingIsOnFireApp').factory('game', function () {
             gameData["robotOneTasks"][snapshot.name()] = snapshot.val();
         });
 
+        self.addRobotOneAction = function(action) {
+            robotOneActionQueue.push(action);
+        }
+        self.robotOneHits = function() {
+            return gameState["robotOneHits"];
+        }
+        self.robotOneActions = function() {
+            return gameState["robotOneActions"];
+        }
+        self.robotOneHealth = function() {
+            return gameState["robotOneHealth"];
+        }
+
         self.hitRobotOne = function(hits) {
             robotOneHits.transaction(function (current) {
 		return (current || 0) + hits;
@@ -60,6 +73,18 @@ angular.module('everythingIsOnFireApp').factory('game', function () {
             console.log(snapshot.val());
             gameData["robotTwoTasks"].push(snapshot.val());
         });
+        self.addRobotTwoAction = function(action) {
+            robotTwoActionQueue.push(action);
+        }
+        self.robotTwoHits = function() {
+            return gameState["robotTwoHits"];
+        }
+        self.robotTwoActions = function() {
+            return gameState["robotTwoActions"];
+        }
+        self.robotTwoHealth = function() {
+            return gameState["robotTwoHealth"];
+        }
         self.hitRobotTwo = function(hits) {
             robotTwoHits.transaction(function (current) {
 		return (current || 0) + hits;
