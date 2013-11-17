@@ -9,7 +9,7 @@ angular.module('everythingIsOnFireApp', [
     $routeProvider
       .when('/', {
         templateUrl: 'views/main.html',
-        controller: 'MainCtrl'
+        controller: 'main'
       })
       .otherwise({
         redirectTo: '/'
