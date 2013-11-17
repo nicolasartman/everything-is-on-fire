@@ -9,10 +9,14 @@ body {
   background-image: url('/images/main_bg.jpg');
 	background-repeat: no-repeat;
 	background-color: black;
+	font-family: 'Orbitron';
+}
+
+h1, h2, h3, h4 {
+	font-family: 'Orbitron';
 }
 
 .hud {
-	font-family: 'Orbitron';
 	font-weight: 500;
 	background-color: black;
 	position: fixed;
