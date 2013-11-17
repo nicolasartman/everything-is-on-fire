@@ -7,8 +7,6 @@ angular.module('everythingIsOnFireApp')
 	['$scope', 'game', '$timeout',
 	function ($scope, game, $timeout) {
 	'use strict';
-
-	$scope.test = game.getThing();
 	
 	$scope.lasersCharged = false;
 	
