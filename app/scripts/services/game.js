@@ -3,6 +3,12 @@ angular.module('everythingIsOnFireApp').factory('game', function () {
 	
 	var gameData = {}, self = {};
 	
+	var mappedThings = _.map([1,2,3], function (item) {
+		return item * 2;
+	});
+	
+	console.log(mappedThings);
+	
 	var root = new Firebase('https://everythingisonfire.firebaseIO.com/');
 	
 	// Whenever the page loads, bump the test value
