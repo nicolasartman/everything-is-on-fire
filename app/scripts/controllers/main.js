@@ -61,6 +61,7 @@ angular.module('everythingIsOnFireApp')
  	var runLoop = function () {
             if (game.isMaster && ! $scope.lose) {
                     game.incrementTime();
+
                     var robotOneActions = game.robotOneActions();
                     if(robotOneActions != null) {
                         var actionKeys = Object.keys(robotOneActions);
@@ -73,9 +74,22 @@ angular.module('everythingIsOnFireApp')
                             }
                         }
                     }
+
+                    var robotTwoActions = game.robotTwoActions();
+                    if(robotTwoActions != null) {
+                        var actionKeys = Object.keys(robotTwoActions);
+                        var index;
+                        for(index = 0; index < actionKeys.length; index++) {
+                            var action = robotTwoActions[actionKeys[index]];
+                            if(game.time() > action.timeout) {
+                                game.removeRobotTwoAction(actionKeys[index]);
+                                game.hitRobotTwo(1);
+                            }
+                        }
+                    }
+
                     if(game.time() % taskInterval == 0) {
                          var action, component;
-
                          action = actions[Math.floor(Math.random() * actions.length)];
                          component = components[Math.floor(Math.random() * components.length)];
                          game.addRobotOneAction({"action": action, "component": component, "timeout": game.time() + 4 * taskInterval});

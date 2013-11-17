@@ -4,16 +4,19 @@ angular.module('everythingIsOnFireApp').factory('game', function () {
 	var gameData = {
                         "robotOneHealth": 1000000000,
                         "robotOneHits": 0,
-                        "robotOneTasks": {},
+                        "robotOneTasks": [],
 
                         "robotTwoHealth": 1000000000,
                         "robotTwoHits": 0,
-                        "robotTwoTasks": {}
+                        "robotTwoTasks": []
                        };
         var self = {};
-
 	
 	var root = new Firebase('https://everythingisonfire.firebaseIO.com/');
+        var time = root.child('time');
+        time.on('value', function(snapshot) {
+            gameData['time'] = snapshot.val();
+        });
         var master = root.child('master');
         self.isMaster = false;
         master.on('value', function(snapshot) {
@@ -43,6 +46,8 @@ angular.module('everythingIsOnFireApp').factory('game', function () {
         var robotTwoHits = robotTwo.child('hits');
 
         self.reset = function() {
+            time.set(0);
+
             robotOneHealth.set(1000000000);
             robotOneActionQueue.set(null);
             robotOneHits.set(0);
@@ -67,7 +72,7 @@ angular.module('everythingIsOnFireApp').factory('game', function () {
 	robotOneActionQueue.on('child_removed', function(snapshot) {
             console.log('task removed for robot 1');
             console.log(snapshot.val());
-            gameData["robotOneTasks"][snapshot.name()] = snapshot.val();
+            delete gameData["robotOneTasks"][snapshot.name()];
         });
 	robotOneActionQueue.on('child_added', function(snapshot) {
             console.log('New task for robot 1');
@@ -80,11 +85,14 @@ angular.module('everythingIsOnFireApp').factory('game', function () {
         self.addRobotOneAction = function(action) {
             robotOneActionQueue.push(action);
         }
+        self.removeRobotOneAction = function(action) {
+            robotOneActionQueue.child(action).remove();
+        }
         self.robotOneHits = function() {
             return gameData["robotOneHits"];
         }
         self.robotOneActions = function() {
-            return gameData["robotOneActions"];
+            return gameData["robotOneTasks"];
         }
         self.robotOneHealth = function() {
             return gameData["robotOneHealth"];
@@ -101,10 +109,10 @@ angular.module('everythingIsOnFireApp').factory('game', function () {
             });
 	};
 
-	robotOneActionQueue.on('child_removed', function(snapshot) {
-            console.log('task removed for robot 1');
+	robotTwoActionQueue.on('child_removed', function(snapshot) {
+            console.log('task removed for robot 2');
             console.log(snapshot.val());
-            gameData["robotTwoTasks"][snapshot.name()] = snapshot.val();
+            delete gameData["robotTwoTasks"][snapshot.name()];
         });
 	robotTwoActionQueue.on('child_added', function(snapshot) {
             console.log('New task for robot 2');
@@ -114,11 +122,14 @@ angular.module('everythingIsOnFireApp').factory('game', function () {
         self.addRobotTwoAction = function(action) {
             robotTwoActionQueue.push(action);
         }
+        self.removeRobotTwoAction = function(action) {
+            robotTwoActionQueue.child(action).remove();
+        }
         self.robotTwoHits = function() {
             return gameData["robotTwoHits"];
         }
         self.robotTwoActions = function() {
-            return gameData["robotTwoActions"];
+            return gameData["robotTwoTasks"];
         }
         self.robotTwoHealth = function() {
             return gameData["robotTwoHealth"];
@@ -134,6 +145,13 @@ angular.module('everythingIsOnFireApp').factory('game', function () {
             });
 	};
 
-
+        self.incrementTime = function() {
+            time.transaction(function(current) {
+                return (current || 0) + 1;
+            });
+        };
+        self.time = function() {
+            return gameData["time"];
+        };
 	return self;
 });
