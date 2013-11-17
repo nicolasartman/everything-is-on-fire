@@ -44,13 +44,52 @@ angular.module('everythingIsOnFireApp')
 		return game.robotOneHits();
 	}
 
+        var actions = [ "reverse polarity", 
+                        "invert wave function", 
+                        "catalyze hyperaxes",
+                        "elevate sprockets",
+                        "recalculate lagrange terrain"];
+
+        var components = [ "tachyon grid",
+                           "imagination engine",
+                           "boson converter",
+                           "battle wave reader",
+                           "pilot waste disposal"];
+
 	// Set scope to refresh every 50ms as a pseudo-runloop
+        var taskInterval = 100;
  	var runLoop = function () {
             if (game.isMaster && ! $scope.lose) {
-		    if (Math.random() > 0.1) {
-			    game.hitRobotOne(1);
-		    }
-		    game.damageRobotOne(game.robotOneHits() * 100000);
+                    game.incrementTime();
+                    var robotOneActions = game.robotOneActions();
+                    if(robotOneActions != null) {
+                        var actionKeys = Object.keys(robotOneActions);
+                        var index;
+                        for(index = 0; index < actionKeys.length; index++) {
+                            var action = robotOneActions[actionKeys[index]];
+                            if(game.time() > action.timeout) {
+                                game.removeRobotOneAction(actionKeys[index]);
+                                game.hitRobotOne(1);
+                            }
+                        }
+                    }
+                    if(game.time() % taskInterval == 0) {
+                         var action, component;
+
+                         action = actions[Math.floor(Math.random() * actions.length)];
+                         component = components[Math.floor(Math.random() * components.length)];
+                         game.addRobotOneAction({"action": action, "component": component, "timeout": game.time() + 4 * taskInterval});
+                         action = actions[Math.floor(Math.random() * actions.length)];
+                         component = components[Math.floor(Math.random() * components.length)];
+                         game.addRobotTwoAction({"action": action, "component": component, "timeout": game.time() + 4 * taskInterval});
+                    }
+                    if(game.time() % 1000 == 0) {
+                        taskInterval = Math.floor(taskInterval / 2);
+                    }
+		    //if (Math.random() < 0.1) {
+			    //game.hitRobotOne(1);
+		    //}
+		    game.damageRobotOne(game.robotOneHits() * 10000);
             }
 	    if ($scope.getHealthPercentage() < 0) {
 		    $scope.lose = true;
