@@ -8,20 +8,25 @@
 
 <div class="row hud">
 	<div class="col-xs-12">
-		<div class="row top">
-			<div class="col-xs-4">life: </div>
-			<div class="col-xs-4">on fire meter: </div>
+		<div class="row">
+			<div class="col-xs-1">life:</div>
+			<div class="col-xs-3">
+				<span class="health-bar" ng-style="{width: getHealthPercentage() + '%'}"></span>
+			</div>
+			<div class="col-xs-4">on fire meter: {{getOnFireAmount()}}</div>
 			<div class="col-xs-4">something else: </div>
 		</div>
 		
 		<div class="row">
 			<div class="col-xs-2"></div>
-			<div class="col-xs-8 viewfinder">
-				
+			<div class="col-xs-8 viewfinder text-center">
+				<div class="row loss-message">
+					<h1 style="color: red" ng-show="lose">You Lose!</h1>					
+				</div>
 			</div>
 		</div>
 
-		<div class="footer">
+		<div class="row">
 			<p>footer</p>
 		</div>
 	</div>

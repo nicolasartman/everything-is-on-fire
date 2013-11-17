@@ -25,11 +25,22 @@ body {
 }
 .viewfinder {
 	background: url('/images/cityscape.jpg');
-	height: 400px;
+	min-height: 400px;
 	box-shadow: inset 0px 0px 100px 75px black;
 	background-position: center center;
 }
-
+.loss-message {
+	margin-top: 180px;
+}
+.health-bar-container {
+	display: inline-block;
+/*	width: 100%;*/
+}
+.health-bar {
+	display: inline-block;
+	height: 20px;
+	background-color: red;
+}
 .hud .row {
 	background-color: black;
 }

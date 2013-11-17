@@ -2,11 +2,11 @@ angular.module('everythingIsOnFireApp').factory('game', function () {
 	'use strict';
 	
 	var gameData = {
-                        "robotOneHealth": 1000000,
+                        "robotOneHealth": 1000000000,
                         "robotOneHits": 0,
                         "robotOneTasks": {},
 
-                        "robotTwoHealth": 1000000,
+                        "robotTwoHealth": 1000000000,
                         "robotTwoHits": 0,
                         "robotTwoTasks": {}
                        };
@@ -44,17 +44,19 @@ angular.module('everythingIsOnFireApp').factory('game', function () {
             gameData["robotOneTasks"][snapshot.name()] = snapshot.val();
         });
 
+				self.maxRobotHealth = 1000000000;
+
         self.addRobotOneAction = function(action) {
             robotOneActionQueue.push(action);
         }
         self.robotOneHits = function() {
-            return gameState["robotOneHits"];
+            return gameData["robotOneHits"];
         }
         self.robotOneActions = function() {
-            return gameState["robotOneActions"];
+            return gameData["robotOneActions"];
         }
         self.robotOneHealth = function() {
-            return gameState["robotOneHealth"];
+            return gameData["robotOneHealth"];
         }
 
         self.hitRobotOne = function(hits) {
@@ -77,13 +79,13 @@ angular.module('everythingIsOnFireApp').factory('game', function () {
             robotTwoActionQueue.push(action);
         }
         self.robotTwoHits = function() {
-            return gameState["robotTwoHits"];
+            return gameData["robotTwoHits"];
         }
         self.robotTwoActions = function() {
-            return gameState["robotTwoActions"];
+            return gameData["robotTwoActions"];
         }
         self.robotTwoHealth = function() {
-            return gameState["robotTwoHealth"];
+            return gameData["robotTwoHealth"];
         }
         self.hitRobotTwo = function(hits) {
             robotTwoHits.transaction(function (current) {
