@@ -13,6 +13,10 @@ angular.module('everythingIsOnFireApp').factory('game', function () {
         var self = {};
 	
 	var root = new Firebase('https://everythingisonfire.firebaseIO.com/');
+        var gameOver = root.child('gameOver');
+        gameOver.on('value', function(snapshot) {
+            gameData['gameOver'] = snapshot.val();
+        });
         var time = root.child('time');
         time.on('value', function(snapshot) {
             gameData['time'] = snapshot.val();
@@ -47,6 +51,7 @@ angular.module('everythingIsOnFireApp').factory('game', function () {
 
         self.reset = function() {
             time.set(0);
+            gameOver.set(false);
 
             robotOneHealth.set(1000000000);
             robotOneActionQueue.set(null);
@@ -152,6 +157,12 @@ angular.module('everythingIsOnFireApp').factory('game', function () {
         };
         self.time = function() {
             return gameData["time"];
+        };
+        self.gameOver = function() {
+            return gameData['gameOver'];
+        };
+        self.endGame = function() {
+            gameOver.set(true);
         };
 	return self;
 });

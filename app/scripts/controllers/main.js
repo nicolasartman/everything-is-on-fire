@@ -104,10 +104,12 @@ angular.module('everythingIsOnFireApp')
 			    //game.hitRobotOne(1);
 		    //}
 		    game.damageRobotOne(game.robotOneHits() * 10000);
+		    game.damageRobotTwo(game.robotTwoHits() * 10000);
             }
 	    if ($scope.getHealthPercentage() < 0) {
-		    $scope.lose = true;
+                game.endGame();
 	    }
+	    $scope.lose = game.gameOver();
 	    $timeout(runLoop, 50);
             
 	};
