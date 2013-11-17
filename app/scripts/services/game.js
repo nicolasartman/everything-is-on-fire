@@ -11,8 +11,27 @@ angular.module('everythingIsOnFireApp').factory('game', function () {
                         "robotTwoTasks": {}
                        };
         var self = {};
+
 	
 	var root = new Firebase('https://everythingisonfire.firebaseIO.com/');
+        var master = root.child('master');
+        self.isMaster = false;
+        master.on('value', function(snapshot) {
+            master.transaction(function(state) {
+                if(state == 'taken') {
+                    console.log("Master position is taken")
+                    return 'taken';
+                }
+                else {
+                    self.isMaster = true;
+                    console.log("Master")
+                    master.onDisconnect().set('free');
+                    return 'taken';
+                }
+            });
+        });
+            
+
         var robotOne = root.child('robotOne');
         var robotOneActionQueue = robotOne.child('activeEvents');
         var robotOneHealth = robotOne.child('health');
@@ -32,6 +51,18 @@ angular.module('everythingIsOnFireApp').factory('game', function () {
             robotTwoActionQueue.set(null);
             robotTwoHits.set(0);
         };
+        robotOneHealth.on('value', function(snapshot) {
+            gameData["robotOneHealth"] = snapshot.val()
+        });
+        robotOneHits.on('value', function(snapshot) {
+            gameData["robotOneHits"] = snapshot.val()
+        });
+        robotTwoHealth.on('value', function(snapshot) {
+            gameData["robotTwoHealth"] = snapshot.val()
+        });
+        robotTwoHits.on('value', function(snapshot) {
+            gameData["robotTwoHits"] = snapshot.val()
+        });
 
 	robotOneActionQueue.on('child_removed', function(snapshot) {
             console.log('task removed for robot 1');
@@ -64,6 +95,11 @@ angular.module('everythingIsOnFireApp').factory('game', function () {
 		return (current || 0) + hits;
             });
 	};
+        self.damageRobotOne = function(damage) {
+            robotOneHealth.transaction(function (current) {
+		return current - damage;
+            });
+	};
 
 	robotOneActionQueue.on('child_removed', function(snapshot) {
             console.log('task removed for robot 1');
@@ -92,6 +128,12 @@ angular.module('everythingIsOnFireApp').factory('game', function () {
 		return (current || 0) + hits;
             });
 	};
+        self.damageRobotTwo = function(damage) {
+            robotTwoHealth.transaction(function (current) {
+		return current - damage;
+            });
+	};
+
 
 	return self;
 });

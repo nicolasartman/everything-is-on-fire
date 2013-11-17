@@ -37,25 +37,33 @@ angular.module('everythingIsOnFireApp')
 	}
 
 	$scope.getHealthPercentage = function () {
-		return ((game.robotOneHealth() - $scope.damage) / game.maxRobotHealth) * 100;
+		return (game.robotOneHealth() / game.maxRobotHealth) * 100;
 	}
 	
 	$scope.getOnFireAmount = function () {
-		return onFireAmount;
+		return game.robotOneHits();
 	}
 
 	// Set scope to refresh every 50ms as a pseudo-runloop
  	var runLoop = function () {
-		if (Math.random() > 0.1) {
-			onFireAmount += 1;
-		}
-		$scope.damage += onFireAmount * 100000;
-		if ($scope.getHealthPercentage() > 0) {
-			$timeout(runLoop, 50);
-		} else {
-			$scope.lose = true;
-		}
+            if (game.isMaster) {
+                    console.log("Am master, running loop")
+		    if (Math.random() > 0.1) {
+			    game.hitRobotOne(1);
+		    }
+		    game.damageRobotOne(game.robotOneHits() * 100000);
+		    if ($scope.getHealthPercentage() > 0) {
+			    $timeout(runLoop, 50);
+		    } else {
+			    $scope.lose = true;
+		    }
+            }
+            else {
+			    $timeout(runLoop, 50);
+           }
+            
 	};
+        game.reset();
 	
 	runLoop();
 	
