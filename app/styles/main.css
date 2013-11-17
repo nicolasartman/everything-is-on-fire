@@ -6,11 +6,24 @@
 body {
   padding-top: 20px;
   padding-bottom: 20px;
-  background-color: black;
+/*  background-color: black;*/
 }
 
 .row {
-	background-color: white;
+/*	background-color: white;*/
+}
+
+.row.row-gap-small {
+	margin-top: 15px;
+}
+.row.row-gap-medium {
+	margin-top: 30px;
+}
+.row.row-gap-large{
+	margin-top: 45px;
+}
+.row.row-gap-huge {
+	margin-top: 60px;
 }
 
 /* Everything but the jumbotron gets side spacing for mobile first views */

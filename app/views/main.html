@@ -13,11 +13,28 @@
 	<div class="col-xs-3">superawesomesauce: </div>
 </div>
 
-<div class="jumbotron">
-	<h1>Everything is on Fire!!!</h1>
-	<p><a class="btn btn-lg btn-success" href="#">Charge Lazorz</a></p>
+<div class="row row-gap-medium">	
+	<div class="jumbotron">
+		<div ng-switch="obstacle">
+			<div ng-switch-when="cow">
+				<h1>Missiles headed straight for us!!!</h1>
+				<p><strong>{{timeLeftToAct}} Seconds Until Impact</strong></p>
+			</div>
+			<h1 ng-switch-default>
+				Everything is on Fire!!!
+			</h1>
+		</div>
+		<p>
+			<a class="btn btn-lg" ng-class="{
+				'btn-success': obstacle == null,
+				'btn-danger': obstacle == 'cow'
+			}" href="" ng-click="chargeLasers()" ng-disabled="lasersCharged">
+				<span ng-hide="lasersCharged">Charge Lazorz</span>
+				<span ng-show="lasersCharged">Charging...</span>
+			</a>
+		</p>
+	</div>
 </div>
-
 
 <div class="footer">
 	<p>footer</p>
