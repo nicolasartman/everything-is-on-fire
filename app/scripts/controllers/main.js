@@ -46,21 +46,16 @@ angular.module('everythingIsOnFireApp')
 
 	// Set scope to refresh every 50ms as a pseudo-runloop
  	var runLoop = function () {
-            if (game.isMaster) {
-                    console.log("Am master, running loop")
+            if (game.isMaster && ! $scope.lose) {
 		    if (Math.random() > 0.1) {
 			    game.hitRobotOne(1);
 		    }
 		    game.damageRobotOne(game.robotOneHits() * 100000);
-		    if ($scope.getHealthPercentage() > 0) {
-			    $timeout(runLoop, 50);
-		    } else {
-			    $scope.lose = true;
-		    }
             }
-            else {
-			    $timeout(runLoop, 50);
-           }
+	    if ($scope.getHealthPercentage() < 0) {
+		    $scope.lose = true;
+	    }
+	    $timeout(runLoop, 50);
             
 	};
         game.reset();
