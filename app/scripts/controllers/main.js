@@ -38,38 +38,68 @@ angular.module('everythingIsOnFireApp')
 
 	$scope.getHealthPercentage = function () {
 		return (game.robotOneHealth() / game.maxRobotHealth) * 100;
-	}
+	};
 	
 	$scope.getOnFireAmount = function () {
 		return game.robotOneHits();
+	};
+	
+	$scope.myRobotNumber = null;
+	$scope.chooseRobot = function (robotNumber) {
+		$scope.myRobotNumber = robotNumber;
+		game.setRobot(robotNumber);
+	};
+
+	$scope.actions = [
+		"reverse polarity", 
+		"invert wave function", 
+		"catalyze hyperaxes",
+		"elevate sprockets",
+		"recalculate lagrange terrain"
+	];
+
+	$scope.components = [
+		"tachyon grid",
+		"imagination engine",
+		"boson converter",
+		"battle wave reader",
+		"pilot waste disposal"
+	];
+	
+	var maybeCheckInput = function () {
+		if ($scope.selectedAction && $scope.selectedComponent) {
+			game.tryInput($scope.selectAction, $scope.selectedComponent);
+			$scope.selectedAction = null;
+			$scope.selectedComponent = null;
+		}
+	}
+	
+	$scope.selectAction = function (action) {
+		$scope.selectedAction = action;
+		maybeCheckInput();
 	}
 
-        var actions = [ "reverse polarity", 
-                        "invert wave function", 
-                        "catalyze hyperaxes",
-                        "elevate sprockets",
-                        "recalculate lagrange terrain"];
+	$scope.selectComponent = function (component) {
+		$scope.selectedComponent = component;
+		maybeCheckInput();
+	}
 
-        var components = [ "tachyon grid",
-                           "imagination engine",
-                           "boson converter",
-                           "battle wave reader",
-                           "pilot waste disposal"];
-      var checkActions = function(robotActions, robot) {
-             var hits = 0;
-             if(robotActions != null) {
-                        var actionKeys = Object.keys(robotActions);
-                        var index;
-                        for(index = 0; index < actionKeys.length; index++) {
-                            var action = robotActions[actionKeys[index]];
-                            if(game.time() > action.timeout) {
-                                game.removeRobotAction(actionKeys[index], robot);
-                                hits++;
-                            }
-                        }
-                    }
-            return hits;
-        }
+	var checkActions = function(robotActions, robot) {
+		var hits = 0;
+		if(robotActions != null) {
+			var actionKeys = Object.keys(robotActions);
+			var index;
+			for(index = 0; index < actionKeys.length; index++) {
+				var action = robotActions[actionKeys[index]];
+				if(game.time() > action.timeout) {
+					game.removeRobotAction(actionKeys[index], robot);
+					hits++;
+				}
+			}
+		}
+		return hits;
+	}
+	
 	// Set scope to refresh every 50ms as a pseudo-runloop
  	var runLoop = function () {
             if (game.isMaster && ! $scope.lose) {
@@ -83,11 +113,11 @@ angular.module('everythingIsOnFireApp')
 
                     if(game.time() % game.interval() == 0) {
                          var action, component;
-                         action = actions[Math.floor(Math.random() * actions.length)];
-                         component = components[Math.floor(Math.random() * components.length)];
+                         action = $scope.actions[Math.floor(Math.random() * $scope.actions.length)];
+                         component = $scope.components[Math.floor(Math.random() * $scope.components.length)];
                          game.addRobotOneAction({"action": action, "component": component, "timeout": game.time() + 4 * game.interval()});
-                         action = actions[Math.floor(Math.random() * actions.length)];
-                         component = components[Math.floor(Math.random() * components.length)];
+                         action = $scope.actions[Math.floor(Math.random() * $scope.actions.length)];
+                         component = $scope.components[Math.floor(Math.random() * $scope.components.length)];
                          game.addRobotTwoAction({"action": action, "component": component, "timeout": game.time() + 4 * game.interval()});
                     }
                     if(game.time() % 1000 == 0) {
@@ -106,8 +136,7 @@ angular.module('everythingIsOnFireApp')
 	    $timeout(runLoop, 50);
             
 	};
-        game.reset();
-	
+	game.reset();
 	runLoop();
 	
 }]);

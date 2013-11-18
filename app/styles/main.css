@@ -2,10 +2,7 @@
 /* = Bootstrap Overrides = */
 /* ======================= */
 
-/* Space out content a bit */
 body {
-  padding-top: 20px;
-  padding-bottom: 20px;
   background-image: url('/images/main_bg.jpg');
 	background-repeat: no-repeat;
 	background-color: black;
@@ -16,6 +13,9 @@ h1, h2, h3, h4 {
 	font-family: 'Orbitron';
 }
 
+.choose-character {
+	margin-top: 200px;
+}
 .hud {
 	font-weight: 500;
 	background-color: black;
@@ -32,6 +32,11 @@ h1, h2, h3, h4 {
 	min-height: 400px;
 	box-shadow: inset 0px 0px 100px 75px black;
 	background-position: center center;
+}
+/* Action/Component buttons in the HUD*/
+.control {
+	width: 100%;
+	margin-top: 20px;
 }
 .loss-message {
 	margin-top: 180px;

@@ -7,7 +7,20 @@
 </div> -->
 
 <div class="row hud">
-	<div class="col-xs-12">
+	<div class="col-xs-12 text-center choose-character" ng-hide="myRobotNumber">
+		<h1>Choose Your Side</h1>
+		<div class="row row-gap-large">
+			<div class="col-xs-3"></div>
+			<div class="col-xs-3">
+				<button class="btn btn-large btn-primary" ng-click="chooseRobot(1)">Mecha Shiva</button>
+			</div>
+			<div class="col-xs-3">
+				<button class="btn btn-large btn-primary" ng-click="chooseRobot(2)">Kawaii Neko</button>
+			</div>
+			<div class="col-xs-3"></div>
+		</div>
+	</div>
+	<div class="col-xs-12" ng-show="myRobotNumber">
 		<div class="row">
 			<div class="col-xs-1">life:</div>
 			<div class="col-xs-3">
@@ -18,11 +31,18 @@
 		</div>
 		
 		<div class="row">
-			<div class="col-xs-2"></div>
+			<div class="col-xs-2">
+				<h2>Action</h2>
+				<button ng-repeat="action in actions" class="control" ng-click="selectAction(action)" ng-class="{'btn-success': action == selectedAction}">{{action}}</button>
+			</div>
 			<div class="col-xs-8 viewfinder text-center">
 				<div class="row loss-message">
 					<h1 style="color: red" ng-show="lose">You Lose!</h1>					
 				</div>
+			</div>
+			<div class="col-xs-2">
+				<h2>Component</h2>
+				<button ng-repeat="component in components" class="control" ng-click="selectComponent(component)" ng-class="{'btn-success': component == selectedComponent}">{{component}}</button>
 			</div>
 		</div>
 
