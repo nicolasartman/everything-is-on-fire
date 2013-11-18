@@ -66,9 +66,13 @@ angular.module('everythingIsOnFireApp')
 		"pilot waste disposal"
 	];
 	
+	$scope.latestAction = null;
+	
 	var maybeCheckInput = function () {
 		if ($scope.selectedAction && $scope.selectedComponent) {
-			game.tryInput($scope.selectAction, $scope.selectedComponent);
+			game.tryInput($scope.selectedAction, $scope.selectedComponent);
+			$scope.latestAction = 'Ok! I will ' + $scope.selectedAction + ' on the ' +
+					$scope.selectedComponent;
 			$scope.selectedAction = null;
 			$scope.selectedComponent = null;
 		}
