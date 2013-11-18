@@ -17,6 +17,18 @@ angular.module('everythingIsOnFireApp').factory('game', function () {
         gameOver.on('value', function(snapshot) {
             gameData['gameOver'] = snapshot.val();
         });
+        var interval = root.child('interval');
+        interval.on('value', function(snapshot) {
+            gameData['interval'] = snapshot.val();
+        });
+        self.decreaseInterval = function() {
+            interval.transaction(function(current) {
+                return Math.floor(current / 2);
+            });
+        };
+        self.interval = function() {
+            return gameData['interval'];
+        }
         var time = root.child('time');
         time.on('value', function(snapshot) {
             gameData['time'] = snapshot.val();
@@ -51,6 +63,7 @@ angular.module('everythingIsOnFireApp').factory('game', function () {
 
 
         self.reset = function() {
+            interval.set(100);
             time.set(0);
             gameOver.set(false);
 
@@ -174,8 +187,12 @@ angular.module('everythingIsOnFireApp').factory('game', function () {
         self.endGame = function() {
             gameOver.set(true);
         };
+        self.robot = function() {
+            return gameData['myBot'];
+        };
         self.setRobot = function(robot) {
             if(robot == 1) {
+                gameData['myBot'] = 1;
                 self.otherActions = self.robotTwoActions;
                 self.otherHealth = self.robotTwoHealth;
                 self.otherHits = self.robotTwoHits;
@@ -186,6 +203,7 @@ angular.module('everythingIsOnFireApp').factory('game', function () {
                 self.hitSelf = self.hitRobotOne;
             }
             else {
+                gameData['myBot'] = 2;
                 self.ownActions = self.robotTwoActions;
                 self.ownHealth = self.robotTwoHealth;
                 self.ownHits = self.robotTwoHits;
@@ -196,6 +214,8 @@ angular.module('everythingIsOnFireApp').factory('game', function () {
                 self.hitSelf = self.hitRobotTwo;
            }
 
-       }
+       };
+       self.setRobot(1);
+       
 	return self;
 });

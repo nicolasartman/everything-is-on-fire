@@ -71,7 +71,6 @@ angular.module('everythingIsOnFireApp')
             return hits;
         }
 	// Set scope to refresh every 50ms as a pseudo-runloop
-        var taskInterval = 100;
  	var runLoop = function () {
             if (game.isMaster && ! $scope.lose) {
                     game.incrementTime();
@@ -82,17 +81,17 @@ angular.module('everythingIsOnFireApp')
                     var robotTwoActions = game.robotTwoActions();
                     game.hitRobotTwo(checkActions(robotTwoActions, 2));
 
-                    if(game.time() % taskInterval == 0) {
+                    if(game.time() % game.interval() == 0) {
                          var action, component;
                          action = actions[Math.floor(Math.random() * actions.length)];
                          component = components[Math.floor(Math.random() * components.length)];
-                         game.addRobotOneAction({"action": action, "component": component, "timeout": game.time() + 4 * taskInterval});
+                         game.addRobotOneAction({"action": action, "component": component, "timeout": game.time() + 4 * game.interval()});
                          action = actions[Math.floor(Math.random() * actions.length)];
                          component = components[Math.floor(Math.random() * components.length)];
-                         game.addRobotTwoAction({"action": action, "component": component, "timeout": game.time() + 4 * taskInterval});
+                         game.addRobotTwoAction({"action": action, "component": component, "timeout": game.time() + 4 * game.interval()});
                     }
                     if(game.time() % 1000 == 0) {
-                        taskInterval = Math.floor(taskInterval / 2);
+                        game.decreaseInterval();
                     }
 		    //if (Math.random() < 0.1) {
 			    //game.hitRobotOne(1);
