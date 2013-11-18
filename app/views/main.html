@@ -20,7 +20,7 @@
 			<div class="col-xs-3"></div>
 		</div>
 	</div>
-	<div class="col-xs-12" ng-show="myRobotNumber">
+	<div class="col-xs-12 main-game" ng-show="myRobotNumber">
 		<div class="row">
 			<div class="col-xs-1">life:</div>
 			<div class="col-xs-3">
@@ -55,6 +55,9 @@
 		<div class="row">
 			<h2>Incoming</h2>
 			<p ng-repeat="task in getTasks()">We need to {{task.action}} with the {{task.component}}</p>
+		</div>
+		<div class="footer-area">
+			<a href="" ng-click="resetGame()" class="small">Reset</a>
 		</div>
 	</div>
 </div>

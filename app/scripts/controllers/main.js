@@ -35,6 +35,8 @@ angular.module('everythingIsOnFireApp')
 			$scope.lasersCharged = false;
 		}
 	}
+	
+	$scope.resetGame = game.reset;
 
 	$scope.getHealthPercentage = function () {
 		return (game.robotOneHealth() / game.maxRobotHealth) * 100;
