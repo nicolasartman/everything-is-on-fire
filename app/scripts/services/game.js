@@ -216,6 +216,21 @@ angular.module('everythingIsOnFireApp').factory('game', function () {
 
        };
        self.setRobot(1);
-       
+       self.tryInput = function(action, component) {
+           var robotActions = self.ownActions()
+           var actionKeys = Object.keys(robotActions);
+           var index;
+           for(index = 0; index < actionKeys.length; index++) {
+               var task = robotActions[actionKeys[index]];
+               if(task.action == action && task.component == component) {
+                   game.removeRobotAction(actionKeys[index], gameData['myBot']);
+                   console.log("Bam! hit other robot!");
+                   self.hitOther(10);
+                   return;
+               }
+           }
+           self.hitSelf(2);
+        };
+
 	return self;
 });
