@@ -47,7 +47,10 @@
 		</div>
 
 		<div class="row text-center">
-			<p>{{latestAction}}</p>
+			<p ng-show="latestAction">
+				Ok! I will {{latestAction.action}} with the {{latestAction.component}}.
+				<span ng-show="latestAction.failed">Oh no it's on <span style="color: red;">fire!</span></span>
+			</p>
 		</div>
 		<div class="row">
 			<h2>Incoming</h2>

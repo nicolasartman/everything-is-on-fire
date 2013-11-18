@@ -70,9 +70,13 @@ angular.module('everythingIsOnFireApp')
 	
 	var maybeCheckInput = function () {
 		if ($scope.selectedAction && $scope.selectedComponent) {
-			game.tryInput($scope.selectedAction, $scope.selectedComponent);
-			$scope.latestAction = 'Ok! I will ' + $scope.selectedAction + ' on the ' +
-					$scope.selectedComponent;
+			var success = game.tryInput($scope.selectedAction, $scope.selectedComponent);
+			$scope.latestAction = {
+				action: $scope.selectedAction,
+				component: $scope.selectedComponent,
+				failed: !success
+			};
+			
 			$scope.selectedAction = null;
 			$scope.selectedComponent = null;
 		}
