@@ -1,7 +1,7 @@
 angular.module('everythingIsOnFireApp').factory('game', function () {
-	'use strict';
-	
-	var gameData = {
+  'use strict';
+  
+  var gameData = {
                         "robotOneHealth": 1000000000,
                         "robotOneHits": 0,
                         "robotOneTasks": [],
@@ -11,8 +11,8 @@ angular.module('everythingIsOnFireApp').factory('game', function () {
                         "robotTwoTasks": []
                        };
         var self = {};
-	
-	var root = new Firebase('https://everythingisonfire.firebaseIO.com/');
+  
+  var root = new Firebase('https://everythingisonfire.firebaseIO.com/');
         var gameOver = root.child('gameOver');
         gameOver.on('value', function(snapshot) {
             gameData['gameOver'] = snapshot.val();
@@ -88,22 +88,22 @@ angular.module('everythingIsOnFireApp').factory('game', function () {
             gameData["robotTwoHits"] = snapshot.val()
         });
 
-				robotOneActionQueue.on('child_removed', function(snapshot) {
+        robotOneActionQueue.on('child_removed', function(snapshot) {
             console.log('task removed for robot 1');
             console.log(snapshot.val());
-						gameData['robotOneTasks'] = _.reject(gameData['robotOneTasks'], function (task) {
-							console.log('task ' + task.action + '/' + task.component + 'removed for robot 1');
-							return task.id === snapshot.name();
-						});
+            gameData['robotOneTasks'] = _.reject(gameData['robotOneTasks'], function (task) {
+              console.log('task ' + task.action + '/' + task.component + 'removed for robot 1');
+              return task.id === snapshot.name();
+            });
         });
-				robotOneActionQueue.on('child_added', function(snapshot) {
+        robotOneActionQueue.on('child_added', function(snapshot) {
             console.log('New task for robot 1');
-						var task = snapshot.val();
-						task.id = snapshot.name();
+            var task = snapshot.val();
+            task.id = snapshot.name();
             gameData["robotOneTasks"].push(task);
         });
 
-				self.maxRobotHealth = 1000000000;
+        self.maxRobotHealth = 1000000000;
 
         self.addRobotOneAction = function(action) {
             robotOneActionQueue.push(action);
@@ -123,14 +123,14 @@ angular.module('everythingIsOnFireApp').factory('game', function () {
 
         self.hitRobotOne = function(hits) {
             robotOneHits.transaction(function (current) {
-		return (current || 0) + hits;
+    return (current || 0) + hits;
             });
-	};
+  };
         self.damageRobotOne = function(damage) {
             robotOneHealth.transaction(function (current) {
-		return current - damage;
+    return current - damage;
             });
-	};
+  };
 
         self.removeRobotAction = function(action, robot) {
             if(robot == 1) {
@@ -141,18 +141,18 @@ angular.module('everythingIsOnFireApp').factory('game', function () {
             }
 
         }
-				robotTwoActionQueue.on('child_removed', function(snapshot) {
+        robotTwoActionQueue.on('child_removed', function(snapshot) {
             console.log('task removed for robot 2');
             console.log(snapshot.val());
-						gameData['robotTwoTasks'] = _.reject(gameData['robotTwoTasks'], function (task) {
-							console.log('task ' + task.action + '/' + task.component + 'removed for robot 2');
-							return task.id === snapshot.name();
-						});
+            gameData['robotTwoTasks'] = _.reject(gameData['robotTwoTasks'], function (task) {
+              console.log('task ' + task.action + '/' + task.component + 'removed for robot 2');
+              return task.id === snapshot.name();
+            });
         });
-				robotTwoActionQueue.on('child_added', function(snapshot) {
+        robotTwoActionQueue.on('child_added', function(snapshot) {
             console.log('New task for robot 2');
-						var task = snapshot.val();
-						task.id = snapshot.name();
+            var task = snapshot.val();
+            task.id = snapshot.name();
             gameData["robotTwoTasks"].push(task);
         });
         self.addRobotTwoAction = function(action) {
@@ -172,14 +172,14 @@ angular.module('everythingIsOnFireApp').factory('game', function () {
         }
         self.hitRobotTwo = function(hits) {
             robotTwoHits.transaction(function (current) {
-		return (current || 0) + hits;
+    return (current || 0) + hits;
             });
-	};
+  };
         self.damageRobotTwo = function(damage) {
             robotTwoHealth.transaction(function (current) {
-		return current - damage;
+    return current - damage;
             });
-	};
+  };
 
         self.incrementTime = function() {
             time.transaction(function(current) {
@@ -226,7 +226,7 @@ angular.module('everythingIsOnFireApp').factory('game', function () {
        self.setRobot(1);
        self.tryInput = function(action, component) {
            var robotActions = self.ownActions()
-					 console.log(robotActions);
+           console.log(robotActions);
            var actionKeys = Object.keys(robotActions);
            var index;
            for(index = 0; index < actionKeys.length; index++) {
@@ -242,5 +242,5 @@ angular.module('everythingIsOnFireApp').factory('game', function () {
            return false;
         };
 
-	return self;
+  return self;
 });
