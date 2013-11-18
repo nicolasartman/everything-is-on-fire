@@ -88,15 +88,19 @@ angular.module('everythingIsOnFireApp').factory('game', function () {
             gameData["robotTwoHits"] = snapshot.val()
         });
 
-	robotOneActionQueue.on('child_removed', function(snapshot) {
+				robotOneActionQueue.on('child_removed', function(snapshot) {
             console.log('task removed for robot 1');
             console.log(snapshot.val());
-            delete gameData["robotOneTasks"][snapshot.name()];
+						gameData['robotOneTasks'] = _.reject(gameData['robotOneTasks'], function (task) {
+							console.log('task ' + task.action + '/' + task.component + 'removed for robot 1');
+							return task.id === snapshot.name();
+						});
         });
-	robotOneActionQueue.on('child_added', function(snapshot) {
+				robotOneActionQueue.on('child_added', function(snapshot) {
             console.log('New task for robot 1');
-            console.log(snapshot.val());
-            gameData["robotOneTasks"][snapshot.name()] = snapshot.val();
+						var task = snapshot.val();
+						task.id = snapshot.name();
+            gameData["robotOneTasks"].push(task);
         });
 
 				self.maxRobotHealth = 1000000000;
@@ -137,15 +141,19 @@ angular.module('everythingIsOnFireApp').factory('game', function () {
             }
 
         }
-	robotTwoActionQueue.on('child_removed', function(snapshot) {
+				robotTwoActionQueue.on('child_removed', function(snapshot) {
             console.log('task removed for robot 2');
             console.log(snapshot.val());
-            delete gameData["robotTwoTasks"][snapshot.name()];
+						gameData['robotTwoTasks'] = _.reject(gameData['robotTwoTasks'], function (task) {
+							console.log('task ' + task.action + '/' + task.component + 'removed for robot 2');
+							return task.id === snapshot.name();
+						});
         });
-	robotTwoActionQueue.on('child_added', function(snapshot) {
+				robotTwoActionQueue.on('child_added', function(snapshot) {
             console.log('New task for robot 2');
-            console.log(snapshot.val());
-            gameData["robotTwoTasks"][snapshot.name()] = snapshot.val();
+						var task = snapshot.val();
+						task.id = snapshot.name();
+            gameData["robotTwoTasks"].push(task);
         });
         self.addRobotTwoAction = function(action) {
             robotTwoActionQueue.push(action);
@@ -218,6 +226,7 @@ angular.module('everythingIsOnFireApp').factory('game', function () {
        self.setRobot(1);
        self.tryInput = function(action, component) {
            var robotActions = self.ownActions()
+					 console.log(robotActions);
            var actionKeys = Object.keys(robotActions);
            var index;
            for(index = 0; index < actionKeys.length; index++) {
