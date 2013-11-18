@@ -226,10 +226,11 @@ angular.module('everythingIsOnFireApp').factory('game', function () {
                    game.removeRobotAction(actionKeys[index], gameData['myBot']);
                    console.log("Bam! hit other robot!");
                    self.hitOther(10);
-                   return;
+                   return true;
                }
            }
            self.hitSelf(2);
+           return false;
         };
 
 	return self;
