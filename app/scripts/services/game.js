@@ -49,6 +49,7 @@ angular.module('everythingIsOnFireApp').factory('game', function () {
         var robotTwoHealth = robotTwo.child('health');
         var robotTwoHits = robotTwo.child('hits');
 
+
         self.reset = function() {
             time.set(0);
             gameOver.set(false);
@@ -173,5 +174,28 @@ angular.module('everythingIsOnFireApp').factory('game', function () {
         self.endGame = function() {
             gameOver.set(true);
         };
+        self.setRobot = function(robot) {
+            if(robot == 1) {
+                self.otherActions = self.robotTwoActions;
+                self.otherHealth = self.robotTwoHealth;
+                self.otherHits = self.robotTwoHits;
+                self.ownActions = self.robotOneActions;
+                self.ownHealth = self.robotOneHealth;
+                self.ownHits = self.robotOneHits;
+                self.hitOther = self.hitRobotTwo;
+                self.hitSelf = self.hitRobotOne;
+            }
+            else {
+                self.ownActions = self.robotTwoActions;
+                self.ownHealth = self.robotTwoHealth;
+                self.ownHits = self.robotTwoHits;
+                self.otherActions = self.robotOneActions;
+                self.otherHealth = self.robotOneHealth;
+                self.otherHits = self.robotOneHits;
+                self.hitOther = self.hitRobotOne;
+                self.hitSelf = self.hitRobotTwo;
+           }
+
+       }
 	return self;
 });
