@@ -46,8 +46,12 @@
 			</div>
 		</div>
 
-		<div class="row">
+		<div class="row text-center">
 			<p>{{latestAction}}</p>
+		</div>
+		<div class="row">
+			<h2>Incoming</h2>
+			<p ng-repeat="task in getTasks()">We need to {{task.action}} with the {{task.component}}</p>
 		</div>
 	</div>
 </div>

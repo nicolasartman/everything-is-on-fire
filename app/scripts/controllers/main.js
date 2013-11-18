@@ -87,6 +87,10 @@ angular.module('everythingIsOnFireApp')
 		$scope.selectedComponent = component;
 		maybeCheckInput();
 	}
+	
+	$scope.getTasks = function () {
+		return game.ownActions();
+	}
 
 	var checkActions = function(robotActions, robot) {
 		var hits = 0;
